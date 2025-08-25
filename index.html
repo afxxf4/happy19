@@ -1,176 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Birthday Surprise 🎉</title>
+  <meta charset="UTF-8">
+  <title>Birthday Surprise</title>
   <style>
     body {
       margin: 0;
-      background-color: #b25a3a; /* lighter brown */
-      font-family: 'Cursive', sans-serif;
+      background: #c46a4d;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      font-family: "Comic Sans MS", cursive;
       overflow: hidden;
-      color: white;
     }
 
-    .scene {
-      position: absolute;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
+    .hidden { display: none; }
 
-    .show {
-      opacity: 1;
-    }
-
+    /* Cake */
     .cake {
-      width: 160px;
-      height: 100px;
-      background: #8B4513;
-      border-radius: 10px;
-      margin: auto;
       position: relative;
+      width: 200px;
+      height: 120px;
+      background: #d2a679;
+      border-radius: 10px;
+      box-shadow: inset -8px -12px #b3865c;
     }
 
     .candle {
-      width: 6px;
-      height: 20px;
-      background: #fff;
+      width: 10px;
+      height: 40px;
+      background: #fff8dc;
       position: absolute;
-      top: -20px;
-      border-radius: 2px;
+      top: -40px;
+      border-radius: 3px;
     }
 
     .candle:after {
       content: "";
-      width: 8px;
-      height: 12px;
-      background: orange;
-      border-radius: 50%;
       position: absolute;
-      top: -12px;
-      left: -1px;
-      animation: flicker 1s infinite alternate;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 15px;
+      background: orange;
+      border-radius: 50% 50% 50% 50%;
+      animation: flicker 0.3s infinite;
     }
 
     @keyframes flicker {
-      from { transform: scale(1); opacity: 1; }
-      to { transform: scale(1.2); opacity: 0.7; }
+      0% { opacity: 1; transform: translateX(-50%) scale(1); }
+      50% { opacity: 0.6; transform: translateX(-50%) scale(0.8); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
     }
 
+    /* Disney-style balloons */
     .balloon {
-      width: 40px;
-      height: 50px;
-      background: red;
+      width: 60px;
+      height: 80px;
       border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
       position: absolute;
-      bottom: -60px;
-      animation: float 5s linear forwards;
+      bottom: -100px;
+      animation: float 6s linear forwards;
+      box-shadow: inset -5px -10px rgba(0,0,0,0.2);
+    }
+
+    .balloon div {
+      width: 2px;
+      height: 40px;
+      background: #333;
+      margin: 0 auto;
     }
 
     @keyframes float {
-      to { transform: translateY(-120vh); opacity: 0; }
+      from { transform: translateY(0); }
+      to { transform: translateY(-120vh); }
     }
 
+    /* Roses bouquet */
     .rose {
-      width: 30px;
-      height: 30px;
-      background: red;
+      width: 40px;
+      height: 40px;
+      background: radial-gradient(circle at 10px 10px, #ff4d6d, #b3003b);
       border-radius: 50%;
-      display: inline-block;
       margin: 5px;
-      position: relative;
+      display: inline-block;
+      box-shadow: inset -3px -5px rgba(0,0,0,0.2);
     }
 
     .wrap {
       background: white;
-      padding: 20px;
-      border-radius: 30px;
+      padding: 25px;
+      border-radius: 50% 50% 20% 20%;
       display: inline-block;
+      border: 3px dashed #ddd;
     }
+
+    /* Text fade */
+    .text {
+      font-size: 28px;
+      text-align: center;
+      color: #fff;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      position: absolute;
+    }
+
+    .show { opacity: 1; }
   </style>
 </head>
 <body>
-  <!-- Scene 1: Birthday Text -->
-  <div id="scene1" class="scene">✨ Happy Birthday my kuchikuchikuuu &lt;3 ✨</div>
-
-  <!-- Scene 2: Tap Prompt -->
-  <div id="scene2" class="scene">tap on the screen pretty boy hehe</div>
-
-  <!-- Scene 3: Cake Text -->
-  <div id="scene3" class="scene">Here is a cake for all the years you haven’t had your own cake :33</div>
-
-  <!-- Scene 4: Cake -->
-  <div id="scene4" class="scene">
-    <div class="cake">
-      <div class="candle" style="left:20px"></div>
-      <div class="candle" style="left:50px"></div>
-      <div class="candle" style="left:80px"></div>
-      <div class="candle" style="left:110px"></div>
-      <div class="candle" style="left:140px"></div>
-    </div>
-  </div>
-
-  <!-- Scene 5: Roses -->
-  <div id="scene5" class="scene">
-    <div class="wrap">
-      <!-- 19 roses -->
-      <div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div>
-      <div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div>
-      <div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div>
-      <div class="rose"></div><div class="rose"></div><div class="rose"></div><div class="rose"></div>
-    </div>
-  </div>
+  <div id="scene"></div>
 
   <script>
-    const scenes = [
-      document.getElementById("scene1"),
-      document.getElementById("scene2"),
-      document.getElementById("scene3"),
-      document.getElementById("scene4"),
-      document.getElementById("scene5"),
-    ];
-
     let step = 0;
+    const scene = document.getElementById("scene");
 
-    function showScene(n) {
-      scenes.forEach(s => s.classList.remove("show"));
-      scenes[n].classList.add("show");
+    function showScene(num) {
+      scene.innerHTML = "";
+      if (num === 2) {
+        let t = document.createElement("div");
+        t.className = "text show";
+        t.innerText = "Happy Birthday my kuchikuchikuuu <3";
+        scene.appendChild(t);
+      }
+      if (num === 3) {
+        let cake = document.createElement("div");
+        cake.className = "cake";
+        for (let i = 0; i < 5; i++) {
+          let c = document.createElement("div");
+          c.className = "candle";
+          c.style.left = (30 + i*30) + "px";
+          cake.appendChild(c);
+        }
+        scene.appendChild(cake);
+      }
+      if (num === 4) {
+        let wrap = document.createElement("div");
+        wrap.className = "wrap";
+        for (let i=0; i<19; i++) {
+          let r = document.createElement("div");
+          r.className = "rose";
+          wrap.appendChild(r);
+        }
+        scene.appendChild(wrap);
+      }
     }
 
-    // Sequence
-    showScene(0);
-    setTimeout(() => {
-      scenes[0].classList.remove("show");
-      showScene(1);
-    }, 4000);
-
-    // Tap for next
     document.body.addEventListener("click", () => {
-      if (step === 0) { // from tap prompt -> cake text
+      if (step === 0) {
         showScene(2);
         step++;
-      } else if (step === 1) { // cake text -> cake
+      } else if (step === 1) {
         showScene(3);
         step++;
-        // spawn balloons
+        // simulate candle blow after 3s
         setTimeout(() => {
-          for (let i = 0; i < 7; i++) {
-            let b = document.createElement("div");
-            b.classList.add("balloon");
-            b.style.left = (Math.random() * 90) + "vw";
-            b.style.background = ["#a67b5b", "#c19a6b", "#8b5e3c", "#d2b48c", "#654321"][Math.floor(Math.random()*5)];
-            b.style.animationDuration = (3 + Math.random()*2) + "s";
-            document.body.appendChild(b);
-            setTimeout(()=> b.remove(),5000);
-          }
-        }, 500);
-      } else if (step === 2) { // cake -> roses
+          document.querySelectorAll(".candle:after").forEach(f => f.style.display="none");
+          // after 1s → balloons
+          setTimeout(() => {
+            for (let i = 0; i < 8; i++) {
+              let b = document.createElement("div");
+              b.classList.add("balloon");
+              b.style.left = (Math.random() * 90) + "vw";
+              b.style.background = ["#ff6666","#ffcc66","#66ccff","#ff99cc","#99ff99"][Math.floor(Math.random()*5)];
+              b.style.animationDuration = (4 + Math.random()*3) + "s";
+              let s = document.createElement("div");
+              b.appendChild(s);
+              document.body.appendChild(b);
+              setTimeout(()=> b.remove(),7000);
+            }
+          }, 1000);
+        }, 3000);
+      } else if (step === 2) {
         showScene(4);
         step++;
       }
