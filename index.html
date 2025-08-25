@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disney Minimalist Cake</title>
+  <title>Disney Cake Scene</title>
   <style>
     body {
       margin: 0;
@@ -11,85 +11,73 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: radial-gradient(circle at center, #3b2a20, #1a0f0a);
+      background: #873e23; /* your new background */
     }
-
     .cake {
       position: relative;
       width: 220px;
       height: 120px;
-      background: linear-gradient(to bottom, #5a3828, #3e251a);
-      border-radius: 0 0 15px 15px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.6), inset 0 4px 8px rgba(255,255,255,0.08);
+      background: #5c3d2e;
+      border-radius: 10px;
+      box-shadow: inset 0 5px 0 #402a20;
     }
-
     .cake::before {
       content: "";
       position: absolute;
-      top: -25px;
+      top: -20px;
       left: 0;
       width: 100%;
-      height: 40px;
-      background: radial-gradient(circle at 50% 30%, #6e4632, #3e251a);
-      border-radius: 50%;
+      height: 20px;
+      background: #70412c;
+      border-radius: 10px 10px 0 0;
     }
-
-    .candle {
+    .candles {
       position: absolute;
-      width: 8px;
-      height: 45px;
-      background: #f7f0e8;
-      border-radius: 3px;
-      top: -60px;
-      box-shadow: inset 0 0 4px rgba(0,0,0,0.2);
-      animation: gentleWave 3s ease-in-out infinite;
+      top: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 12px;
     }
-
-    .candle:nth-child(1) { left: 30px; animation-delay: 0s; }
-    .candle:nth-child(2) { left: 70px; animation-delay: 0.3s; }
-    .candle:nth-child(3) { left: 110px; animation-delay: 0.6s; }
-    .candle:nth-child(4) { left: 150px; animation-delay: 0.9s; }
-    .candle:nth-child(5) { left: 190px; animation-delay: 1.2s; }
-
+    .candle {
+      width: 10px;
+      height: 40px;
+      background: #ffe6c7;
+      border-radius: 2px;
+      position: relative;
+    }
     .flame {
       position: absolute;
-      top: -18px;
+      top: -15px;
       left: 50%;
-      width: 14px;
-      height: 22px;
-      background: radial-gradient(circle at 50% 40%, #ffd56a, #ff9b2f 70%, transparent 100%);
-      border-radius: 50% 50% 50% 50%;
       transform: translateX(-50%);
-      animation: flicker 1.2s infinite alternate;
+      width: 12px;
+      height: 18px;
+      background: radial-gradient(circle at center, #ffcc70 0%, #ff9933 70%, transparent 100%);
+      border-radius: 50%;
+      animation: flicker 1s infinite alternate ease-in-out;
+      opacity: 1;
+      transition: opacity 1s ease;
     }
-
     @keyframes flicker {
-      from { transform: translateX(-50%) scale(1); opacity: 0.9; }
-      to { transform: translateX(-50%) scale(1.1); opacity: 0.7; }
+      0% { transform: translateX(-50%) scale(1); opacity: 1; }
+      50% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
+      100% { transform: translateX(-50%) scale(0.95); opacity: 1; }
     }
-
-    @keyframes gentleWave {
-      0%, 100% { transform: rotate(-2deg); }
-      50% { transform: rotate(2deg); }
-    }
-
-    /* Blow-out effect */
-    body.blown .flame {
-      animation: fadeOut 2s forwards;
-    }
-
-    @keyframes fadeOut {
-      to { opacity: 0; transform: translateX(-50%) scale(0.2); }
+    .blown .flame {
+      opacity: 0;
     }
   </style>
 </head>
-<body onclick="document.body.classList.add('blown')">
+<body onclick="document.querySelector('.cake').classList.add('blown')">
   <div class="cake">
-    <div class="candle"><div class="flame"></div></div>
-    <div class="candle"><div class="flame"></div></div>
-    <div class="candle"><div class="flame"></div></div>
-    <div class="candle"><div class="flame"></div></div>
-    <div class="candle"><div class="flame"></div></div>
+    <div class="candles">
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+    </div>
   </div>
 </body>
 </html>
