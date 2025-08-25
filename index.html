@@ -1,141 +1,162 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Papyrus', cursive, sans-serif;
+      background: #d6b89c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hidden { display: none; }
+    .pulse { animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-export default function BirthdayApp() {
-  const [scene, setScene] = useState(1);
-  const [candlesBlown, setCandlesBlown] = useState(false);
+    .cake {
+      width: 160px; height: 110px;
+      background: #6b4226; border-radius: 12px;
+      margin: auto; position: relative;
+    }
+    .candle {
+      width: 6px; height: 32px; background: #eee;
+      margin: 0 6px; position: relative; display: inline-block;
+    }
+    .flame {
+      width: 10px; height: 10px;
+      background: yellow; border-radius: 50%;
+      position: absolute; top: -12px; left: -2px;
+      animation: flicker .6s infinite;
+    }
+    @keyframes flicker {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
 
-  const nextScene = () => setScene(scene + 1);
+    .balloon {
+      width: 30px; height: 40px;
+      border-radius: 50%; position: absolute;
+      bottom: -60px;
+      animation: floatUp 6s linear forwards;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
 
-  return (
-    <div className="flex items-center justify-center h-screen bg-[#a35a44]">
-      <AnimatePresence mode="wait">
-        {scene === 1 && (
-          <motion.div
-            key="scene1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center"
-          >
-            <h1 className="text-3xl text-white mb-4 font-serif">
-              Happy Birthday my kuchikuchikuuu &lt;3
-            </h1>
-            <p className="text-white animate-pulse">tap on the screen</p>
-            <div onClick={nextScene} className="h-40 w-full" />
-          </motion.div>
-        )}
+    .bouquet {
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 6px;
+      width: 180px; margin: auto; position: relative;
+    }
+    .rose {
+      width: 32px; height: 32px;
+      background: red; border-radius: 50%;
+      animation: bloom 2s infinite;
+    }
+    @keyframes bloom {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .wrap {
+      width: 100%; height: 60px;
+      background: white; border-radius: 50% 50% 20% 20%;
+      position: absolute; bottom: -20px; opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Scene 1 -->
+  <div id="scene1">
+    <h1>happy birthday my kuchikuchikuuu &lt;3</h1>
+    <p class="pulse">tap on the screen</p>
+  </div>
 
-        {scene === 2 && (
-          <motion.div
-            key="scene2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="text-center"
-          >
-            <h2 className="text-2xl text-white mb-4 font-serif">
-              Here is a cake for all the years you haven’t had your own cake :33
-            </h2>
-            <p className="text-white animate-pulse">tap on the screen</p>
-            <div onClick={nextScene} className="h-40 w-full" />
-          </motion.div>
-        )}
+  <!-- Scene 2 -->
+  <div id="scene2" class="hidden">
+    <h1>here is a cake for all the years you haven’t had your own cake :33</h1>
+    <p class="pulse">tap on the screen</p>
+  </div>
 
-        {scene === 3 && (
-          <motion.div
-            key="scene3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-col items-center"
-            onClick={() => {
-              if (!candlesBlown) setCandlesBlown(true);
-              else nextScene();
-            }}
-          >
-            {/* Cake */}
-            <div className="relative w-48 h-48 bg-[#5c3a2e] rounded-lg shadow-lg flex items-end justify-center">
-              <div className="w-40 h-24 bg-[#7b4b39] rounded-t-lg shadow-md" />
-              {/* Candles */}
-              <div className="absolute top-6 flex space-x-3">
-                {[...Array(5)].map((_, i) => (
-                  <div key={i} className="w-2 h-8 bg-[#f5f5dc] relative">
-                    {!candlesBlown && (
-                      <motion.div
-                        className="w-3 h-3 bg-yellow-300 rounded-full absolute -top-3 left-1/2 -translate-x-1/2"
-                        animate={{
-                          scale: [1, 1.2, 1],
-                          opacity: [1, 0.8, 1],
-                        }}
-                        transition={{ repeat: Infinity, duration: 0.8 }}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="text-white mt-6 animate-pulse">tap on the screen</p>
-            {candlesBlown && <BalloonScene />}
-          </motion.div>
-        )}
-
-        {scene === 4 && (
-          <motion.div
-            key="scene4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex items-center justify-center"
-          >
-            <Bouquet />
-          </motion.div>
-        )}
-      </AnimatePresence>
+  <!-- Scene 3 -->
+  <div id="scene3" class="hidden">
+    <div class="cake">
+      <div id="candles">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
     </div>
-  );
-}
+    <p id="blow" class="pulse">tap on the screen</p>
+  </div>
 
-// Balloons floating (perfect version)
-function BalloonScene() {
-  return (
-    <motion.div
-      key="balloons"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="absolute inset-0 flex justify-center"
-    >
-      {[...Array(19)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="w-8 h-10 rounded-full absolute"
-          style={{
-            backgroundColor: ["#d2b48c", "#a67b5b", "#6f4e37", "#deb887", "#8b5a2b"][i % 5],
-            left: `${Math.random() * 90}%`,
-          }}
-          initial={{ y: "100vh", opacity: 0 }}
-          animate={{ y: "-20vh", opacity: 1 }}
-          transition={{ duration: 5 + Math.random() * 2, delay: i * 0.2 }}
-        />
-      ))}
-    </motion.div>
-  );
-}
+  <!-- Scene 4 balloons -->
+  <div id="balloons" class="hidden"></div>
 
-// Bouquet with 19 roses
-function Bouquet() {
-  return (
-    <div className="relative w-64 h-64 flex flex-wrap justify-center items-center">
-      {[...Array(19)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="w-10 h-10 bg-red-600 rounded-full m-1"
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ repeat: Infinity, duration: 2, delay: i * 0.1 }}
-        />
-      ))}
-      <div className="absolute bottom-0 w-40 h-20 bg-white rounded-t-full opacity-80" />
+  <!-- Scene 5 roses -->
+  <div id="scene5" class="hidden">
+    <div class="bouquet">
+      <div class="wrap"></div>
     </div>
-  );
-}
+  </div>
+
+  <script>
+    let scene = 1;
+    const s1 = document.getElementById('scene1');
+    const s2 = document.getElementById('scene2');
+    const s3 = document.getElementById('scene3');
+    const balloonsDiv = document.getElementById('balloons');
+    const s5 = document.getElementById('scene5');
+    const bouquet = s5.querySelector('.bouquet');
+
+    document.body.addEventListener('click', () => {
+      if (scene === 1) {
+        s1.classList.add('hidden'); s2.classList.remove('hidden'); scene = 2;
+      } else if (scene === 2) {
+        s2.classList.add('hidden'); s3.classList.remove('hidden'); scene = 3;
+      }
+    });
+
+    document.getElementById('blow').addEventListener('click', () => {
+      document.querySelectorAll('.flame').forEach(f => f.remove());
+      document.getElementById('blow').remove();
+
+      // Balloons after 1.5s
+      setTimeout(() => {
+        s3.classList.add('hidden');
+        balloonsDiv.classList.remove('hidden');
+        for (let i = 0; i < 10; i++) {
+          let b = document.createElement('div');
+          b.className = 'balloon';
+          b.style.left = `${Math.random() * 90 + 5}%`;
+          b.style.background = ['#a9745b','#c69c7b','#8b5e3c','#d9b99b','#5c3b28'][i%5];
+          b.style.animationDelay = `${i*0.3}s`;
+          balloonsDiv.appendChild(b);
+        }
+        // After balloons → roses
+        setTimeout(() => {
+          balloonsDiv.classList.add('hidden');
+          s5.classList.remove('hidden');
+          for (let i = 0; i < 19; i++) {
+            let r = document.createElement('div');
+            r.className = 'rose';
+            bouquet.appendChild(r);
+          }
+        }, 5000);
+      }, 1500);
+
+      scene = 4;
+    });
+  </script>
+</body>
+</html>
