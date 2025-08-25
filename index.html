@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Disney Cake Scene</title>
+  <title>Birthday Surprise</title>
   <style>
     body {
       margin: 0;
@@ -11,41 +11,53 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #873e23; /* your new background */
+      background-color: #b25a3a; /* lighter than before */
+      font-family: "Papyrus", "Brush Script MT", cursive;
+      overflow: hidden;
+      color: white;
     }
+
+    .scene {
+      text-align: center;
+    }
+
+    /* Cake */
     .cake {
       position: relative;
-      width: 220px;
-      height: 120px;
-      background: #5c3d2e;
+      width: 180px;
+      height: 100px;
+      background: #5c3a21;
       border-radius: 10px;
-      box-shadow: inset 0 5px 0 #402a20;
+      margin: 0 auto;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
     }
+
     .cake::before {
-      content: "";
+      content: '';
       position: absolute;
       top: -20px;
       left: 0;
       width: 100%;
       height: 20px;
-      background: #70412c;
+      background: #7a4a2a;
       border-radius: 10px 10px 0 0;
     }
-    .candles {
-      position: absolute;
-      top: -45px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 12px;
-    }
+
     .candle {
-      width: 10px;
+      position: absolute;
+      top: -40px;
+      width: 8px;
       height: 40px;
-      background: #ffe6c7;
-      border-radius: 2px;
-      position: relative;
+      background: #f5deb3;
+      border-radius: 3px;
     }
+
+    .candle:nth-child(1) { left: 20px; }
+    .candle:nth-child(2) { left: 55px; }
+    .candle:nth-child(3) { left: 90px; }
+    .candle:nth-child(4) { left: 125px; }
+    .candle:nth-child(5) { left: 160px; }
+
     .flame {
       position: absolute;
       top: -15px;
@@ -53,25 +65,89 @@
       transform: translateX(-50%);
       width: 12px;
       height: 18px;
-      background: radial-gradient(circle at center, #ffcc70 0%, #ff9933 70%, transparent 100%);
+      background: radial-gradient(circle, #ffec85, #ff9900);
       border-radius: 50%;
-      animation: flicker 1s infinite alternate ease-in-out;
-      opacity: 1;
-      transition: opacity 1s ease;
+      animation: flicker 0.3s infinite alternate;
     }
+
     @keyframes flicker {
-      0% { transform: translateX(-50%) scale(1); opacity: 1; }
-      50% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
-      100% { transform: translateX(-50%) scale(0.95); opacity: 1; }
+      from { transform: translateX(-50%) scale(1); opacity: 1; }
+      to   { transform: translateX(-50%) scale(1.1); opacity: 0.85; }
     }
-    .blown .flame {
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 40px;
+      height: 55px;
+      background: brown;
+      border-radius: 50% 50% 45% 45%;
+      animation: float 4s linear forwards;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1.1); opacity: 0; }
+    }
+
+    .string {
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      width: 2px;
+      height: 40px;
+      background: #fff;
+      transform: translateX(-50%);
+    }
+
+    /* Texts */
+    .birthday-text {
+      font-size: 28px;
       opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .memory-text {
+      font-size: 22px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    /* Roses */
+    .bouquet {
+      display: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      width: 250px;
+      margin: 0 auto;
+    }
+
+    .rose {
+      width: 28px;
+      height: 28px;
+      background: red;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .rose::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      top: -3px;
+      left: -3px;
+      z-index: -1;
     }
   </style>
 </head>
-<body onclick="document.querySelector('.cake').classList.add('blown')">
-  <div class="cake">
-    <div class="candles">
+<body>
+  <div class="scene" id="scene1">
+    <div class="cake">
       <div class="candle"><div class="flame"></div></div>
       <div class="candle"><div class="flame"></div></div>
       <div class="candle"><div class="flame"></div></div>
@@ -79,5 +155,53 @@
       <div class="candle"><div class="flame"></div></div>
     </div>
   </div>
+
+  <div class="birthday-text" id="scene3">Happy Birthday my kuchikuchikuuu &lt;3</div>
+  <div class="memory-text" id="scene4">Here is a cake for all the years you haven’t had your own cake :33</div>
+
+  <div class="bouquet" id="scene5"></div>
+
+  <script>
+    const scene1 = document.getElementById('scene1');
+    const birthdayText = document.getElementById('scene3');
+    const memoryText = document.getElementById('scene4');
+    const bouquet = document.getElementById('scene5');
+
+    let step = 0;
+
+    scene1.addEventListener('click', () => {
+      step++;
+      if (step === 1) {
+        document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
+        for (let i = 0; i < 19; i++) {
+          const balloon = document.createElement('div');
+          balloon.classList.add('balloon');
+          balloon.style.left = Math.random() * 100 + 'vw';
+          const colors = ['#a67c52', '#d2b48c', '#8b5e3c', '#deb887', '#5c4033'];
+          balloon.style.background = colors[i % colors.length];
+          balloon.style.animationDuration = (3 + Math.random() * 2) + 's';
+          const string = document.createElement('div');
+          string.classList.add('string');
+          balloon.appendChild(string);
+          document.body.appendChild(balloon);
+          setTimeout(() => balloon.remove(), 4000);
+        }
+        setTimeout(() => birthdayText.style.opacity = 1, 3500);
+        setTimeout(() => birthdayText.style.opacity = 0, 7500);
+      } 
+      else if (step === 2) {
+        memoryText.style.opacity = 1;
+        setTimeout(() => memoryText.style.opacity = 0, 4000);
+      } 
+      else if (step === 3) {
+        bouquet.style.display = 'flex';
+        for (let i = 0; i < 19; i++) {
+          const rose = document.createElement('div');
+          rose.classList.add('rose');
+          bouquet.appendChild(rose);
+        }
+      }
+    });
+  </script>
 </body>
 </html>
